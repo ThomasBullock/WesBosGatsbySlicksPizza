@@ -38,12 +38,9 @@ const SlicemasterStyles = styled.div`
 `;
 
 export default function SlicemastersPage({ data, pageContext}) {
-    console.log(data)
     const slicemasters = data.slicemasters.nodes;
-    console.log(slicemasters)
     return (
     <>
-        {/* <p>skip = {pageContext.skip}</p> */}
         <Pagination pageSize={parseInt(process.env.GATSBY_PAGE_SIZE)} totalCount={data.slicemasters.totalCount} 
             currentPage={pageContext.currentPage || 1}
             skip={pageContext.skip}
