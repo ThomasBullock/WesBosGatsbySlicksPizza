@@ -9,6 +9,7 @@ import OrderStyles from "../styles/OrderStyles";
 import MenuItemStyles from "../styles/MenuItemStyles";
 import usePizza from "../utils/usePizza";
 import PizzaOrder from "../components/PizzaOrder";
+import calculateOrderTotal from "../utils/calculateOrderPrice";
 
 export default function OrderPage({ data }) {
     const pizzas = data.pizzas.nodes;
@@ -17,11 +18,14 @@ export default function OrderPage({ data }) {
         email: "",
     });
 
-    const { order, addToOrder, removeFromOrder } = usePizza({ pizzas, inputs: values });
+    const { order, addToOrder, removeFromOrder, error, loading, message, submitOrder } = usePizza({ pizzas, values });
+    if (message) {
+        return <p>{message}</p>;
+    }
     return (
         <Fragment>
             <SEO title="Order a Pizza!" />
-            <OrderStyles>
+            <OrderStyles onSubmit={submitOrder}>
                 <fieldset>
                     <legend>Your Info</legend>
                     <label htmlFor="name">Name</label>
@@ -54,6 +58,13 @@ export default function OrderPage({ data }) {
                 <fieldset className="order">
                     <legend>Order</legend>
                     <PizzaOrder order={order} removeFromOrder={removeFromOrder} pizzas={pizzas} />
+                </fieldset>
+                <fieldset>
+                    <h3>Your Total is {formatMoney(calculateOrderTotal(order, pizzas))}</h3>
+                    <div>{error ? <p>Error: {error}</p> : ""}</div>
+                    <button type="submit" disabled={loading}>
+                        {loading ? "Placing Order..." : "Order Ahead"}
+                    </button>
                 </fieldset>
             </OrderStyles>
         </Fragment>
