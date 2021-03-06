@@ -1,12 +1,24 @@
-import React, { Fragment } from "react";
+import React from "react";
 import useLatestData from "../utils/useLatestData";
+import { HomePageGrid } from "../styles/Grids.js";
+import LoadingGrid from "../components/LoadingGrid";
 
-function CurrentlySlicing() {
-    return <p>CurrentlySlicing</p>;
+function CurrentlySlicing({ slicemasters }) {
+    return (
+        <div>
+            {!slicemasters && <LoadingGrid count={4} />}
+            {slicemasters && !slicemasters?.length && <p>No one is working right now!</p>}
+        </div>
+    );
 }
 
-function HotSlices() {
-    return <p>HotSlices</p>;
+function HotSlices({ hotSlices }) {
+    return (
+        <div>
+            {!hotSlices && <LoadingGrid count={4} />}
+            {hotSlices && !hotSlices?.length && <p>Nothin' in the Case!</p>}
+        </div>
+    );
 }
 
 export default function HomePage() {
@@ -16,10 +28,10 @@ export default function HomePage() {
         <div className="center">
             <h1>The Best Pizza DownTown!</h1>
             <p>Open 11am to 11pm Every Single Day</p>
-            <div>
+            <HomePageGrid>
                 <CurrentlySlicing slicemasters={slicemasters} />
                 <HotSlices hotSlices={hotSlices} />
-            </div>
+            </HomePageGrid>
         </div>
     );
 }
